@@ -1,4 +1,4 @@
-import { escapeHtml } from "../utils/stringFormatter.js";
+import { escapeHtml } from "../utils/stringFormatter.ts";
 
 type MyButtonProps = {
   label?: string;

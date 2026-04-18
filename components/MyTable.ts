@@ -1,6 +1,11 @@
-import { escapeHtml } from "../utils/stringFormatter.js";
+import { escapeHtml } from "../utils/stringFormatter.ts";
 
-export function MyTable({ columns = [], rows = [] } = {}) {
+type MyTableProps = {
+  columns?: Array<string | { key: string; label?: string }>;
+  rows?: Array<Record<string, any>>;
+};
+
+export function MyTable({ columns = [], rows = [] }: MyTableProps) {
   const normalizedColumns = columns.map((column) =>
     typeof column === "string" ? { key: column, label: column } : column,
   );

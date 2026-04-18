@@ -16,8 +16,8 @@ A simple base library with reusable `My`-prefixed UI components and formatting h
 
 ## Usage
 
-```js
-import { MyButton, MyTable, formatDate } from './index.js';
+```ts
+import { MyButton, MyTable, formatDate } from './index.ts';
 
 const button = MyButton({ label: 'Save', variant: 'primary' });
 const table = MyTable({
@@ -25,5 +25,3 @@ const table = MyTable({
   rows: [{ name: 'Alice', joined: formatDate('2026-04-18') }],
 });
 ```
-
-Open `/examples/demo.html` in a browser to view rendered components.

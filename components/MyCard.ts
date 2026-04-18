@@ -1,6 +1,12 @@
-import { escapeHtml } from "../utils/stringFormatter.js";
+import { escapeHtml } from "../utils/stringFormatter.ts";
 
-export function MyCard({ title = "", content = "", footer = "" } = {}) {
+type MyCardProps = {
+  title?: string;
+  content?: string;
+  footer?: string;
+};
+
+export function MyCard({ title = "", content = "", footer = "" }: MyCardProps) {
   const titleHtml = title ? `<h3 class="my-card__title">${escapeHtml(title)}</h3>` : "";
   const contentHtml = `<div class="my-card__content">${escapeHtml(content)}</div>`;
   const footerHtml = footer ? `<div class="my-card__footer">${escapeHtml(footer)}</div>` : "";
