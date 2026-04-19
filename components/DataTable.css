@@ -123,6 +123,14 @@
   background: var(--surface-2);
 }
 
+.dt-row--clickable {
+  cursor: pointer;
+}
+
+.dt-row--clickable:hover {
+  background: rgba(167, 139, 250, 0.07);
+}
+
 .dt-td {
   padding: 0.7rem 1rem;
   color: var(--text);

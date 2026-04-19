@@ -23,11 +23,12 @@ type DataTableProps = {
     }>
     filterKey?: string
     filters?: FilterDef[]
+    onRowClick?: (row: Record<string, any>) => void
 }
 
 type FilterValue = string | { min: string; max: string }
 
-export function DataTable({ data = [], columns = [], filterKey, filters }: DataTableProps) {
+export function DataTable({ data = [], columns = [], filterKey, filters, onRowClick }: DataTableProps) {
     const [query, setQuery] = useState('')
     const [sortKey, setSortKey] = useState<string | null>(null)
     const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
@@ -203,7 +204,11 @@ export function DataTable({ data = [], columns = [], filterKey, filters }: DataT
                                 </td>
                             </tr>
                         ) : paginated.map((row, i) => (
-                            <tr key={i} className="dt-row">
+                            <tr
+                                key={i}
+                                className={`dt-row${onRowClick ? ' dt-row--clickable' : ''}`}
+                                onClick={() => onRowClick?.(row)}
+                            >
                                 {columns.map(col => (
                                     <td
                                         key={col.key}
