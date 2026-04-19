@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { CustomButton } from '../ui/CustomButton.tsx'
 import '../css/topbar.css'
 
 export type NavItem = {
@@ -17,28 +18,44 @@ export type TopbarProps = {
     onNavigate: (id: string) => void
 }
 
-const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+const scrollToTop = () => {
+    const scrollContainer = document.querySelector<HTMLElement>('.app-content')
+
+    if (scrollContainer) {
+        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 export function Topbar({ appName, appNameClassName, logo, items, currentItem, onNavigate, color }: TopbarProps) {
+    const navigateAndScroll = (id: string) => {
+        onNavigate(id)
+        requestAnimationFrame(scrollToTop)
+    }
+
     return (
         <header className="topbar" style={color ? { background: color } : undefined}>
-            <button
+            <CustomButton
                 className="topbar__brand"
-                onClick={() => { onNavigate(items[0]?.id ?? ''); scrollToTop() }}
+                variant="none"
+                icon={logo ? <span className="topbar__brand-icon">{logo}</span> : undefined}
+                onClick={() => navigateAndScroll(items[0]?.id ?? '')}
             >
-                {logo && <span className="topbar__brand-icon">{logo}</span>}
                 <span className={appNameClassName}>{appName}</span>
-            </button>
+            </CustomButton>
             <nav className="topbar__nav">
                 {items.map(item => (
-                    <button
+                    <CustomButton
                         key={item.id}
                         className={`topbar__link${currentItem === item.id ? ' topbar__link--active' : ''}`}
-                        onClick={() => { onNavigate(item.id); scrollToTop() }}
+                        variant="ghost"
+                        icon={item.icon}
+                        onClick={() => navigateAndScroll(item.id)}
                     >
-                        {item.icon}
                         {item.label}
-                    </button>
+                    </CustomButton>
                 ))}
             </nav>
         </header>

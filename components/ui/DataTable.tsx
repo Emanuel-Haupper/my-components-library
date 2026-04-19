@@ -1,6 +1,9 @@
 import { useState, useMemo } from 'react'
-import { ArrowUp, ArrowDown, ArrowUpDown, ChevronLeft, ChevronRight, Search, SlidersHorizontal, X } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowUpDown, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
+import { CustomButton } from './CustomButton.tsx'
+import { SearchInput } from './filters/SearchInput.tsx'
 import '../css/data-table.css'
+import { FilterPanel, type FilterValue } from '../index.ts'
 
 const ROWS_PER_PAGE = 10
 
@@ -8,7 +11,9 @@ export type FilterDef = {
     key: string
     label: string
     type: 'text' | 'select' | 'range'
+    /** select: derived from data if omitted */
     options?: string[]
+    /** range: derived from data if omitted */
     min?: number
     max?: number
 }
@@ -26,8 +31,6 @@ export type DataTableProps = {
     onRowClick?: (row: Record<string, any>) => void
 }
 
-type FilterValue = string | { min: string; max: string }
-
 export function DataTable({ data = [], columns = [], filterKey, filters, onRowClick }: DataTableProps) {
     const [query, setQuery] = useState('')
     const [sortKey, setSortKey] = useState<string | null>(null)
@@ -36,6 +39,17 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
     const [panelOpen, setPanelOpen] = useState(false)
     const [pendingFilters, setPendingFilters] = useState<Record<string, FilterValue>>({})
     const [appliedFilters, setAppliedFilters] = useState<Record<string, FilterValue>>({})
+
+    // Derive select options from data (or use provided options)
+    const selectOptions = useMemo(() => {
+        const opts: Record<string, string[]> = {}
+        if (!filters) return opts
+        for (const f of filters) {
+            if (f.type !== 'select') continue
+            opts[f.key] = f.options ?? Array.from(new Set(data.map(row => String(row[f.key])).filter(Boolean))).sort()
+        }
+        return opts
+    }, [data, filters])
 
     const dataRanges = useMemo(() => {
         const ranges: Record<string, { min: number; max: number }> = {}
@@ -62,44 +76,21 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
     }, [appliedFilters, dataRanges])
 
     function handleSort(key: string) {
-        if (sortKey !== key) {
-            setSortKey(key)
-            setSortDir('asc')
-        } else if (sortDir === 'asc') {
-            setSortDir('desc')
-        } else {
-            setSortKey(null)
-        }
+        if (sortKey !== key) { setSortKey(key); setSortDir('asc') }
+        else if (sortDir === 'asc') setSortDir('desc')
+        else setSortKey(null)
         setPage(1)
     }
 
-    function openPanel() {
-        setPendingFilters({ ...appliedFilters })
-        setPanelOpen(true)
-    }
-
-    function applyFilters() {
-        setAppliedFilters({ ...pendingFilters })
-        setPage(1)
-        setPanelOpen(false)
-    }
-
-    function clearFilters() {
-        setPendingFilters({})
-        setAppliedFilters({})
-        setPage(1)
-    }
-
-    function setPending(key: string, value: FilterValue) {
-        setPendingFilters(prev => ({ ...prev, [key]: value }))
-    }
+    function openPanel() { setPendingFilters({ ...appliedFilters }); setPanelOpen(true) }
+    function applyFilters() { setAppliedFilters({ ...pendingFilters }); setPage(1); setPanelOpen(false) }
+    function clearFilters() { setPendingFilters({}); setAppliedFilters({}); setPage(1) }
+    function setPending(key: string, value: FilterValue) { setPendingFilters(prev => ({ ...prev, [key]: value })) }
 
     const filtered = useMemo(() => {
         let result = data
         if (query && filterKey) {
-            result = result.filter(row =>
-                String(row[filterKey]).toLowerCase().includes(query.toLowerCase())
-            )
+            result = result.filter(row => String(row[filterKey]).toLowerCase().includes(query.toLowerCase()))
         }
         for (const [key, value] of Object.entries(appliedFilters)) {
             if (!value) continue
@@ -113,9 +104,7 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
                     return true
                 })
             } else {
-                result = result.filter(row =>
-                    String(row[key]).toLowerCase().includes(value.toLowerCase())
-                )
+                result = result.filter(row => String(row[key]).toLowerCase().includes(value.toLowerCase()))
             }
         }
         return result
@@ -149,39 +138,24 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
             {(filterKey || filters) && (
                 <div className="dt-toolbar">
                     {filterKey && (
-                        <div className="dt-search-wrap">
-                            <Search size={14} className="dt-search-icon" />
-                            <input
-                                className="dt-search"
-                                type="text"
-                                placeholder="Search"
-                                value={query}
-                                onChange={e => { setQuery(e.target.value); setPage(1) }}
-                            />
-                            {query && (
-                                <button
-                                    className="dt-search-clear"
-                                    type="button"
-                                    aria-label="Clear search"
-                                    onClick={() => { setQuery(''); setPage(1) }}
-                                >
-                                    <X size={13} />
-                                </button>
-                            )}
-                        </div>
+                        <SearchInput
+                            value={query}
+                            onChange={v => { setQuery(v); setPage(1) }}
+                            placeholder="Search…"
+                        />
                     )}
                     <div className="dt-toolbar-right">
                         <span className="dt-count">{sorted.length} result{sorted.length !== 1 ? 's' : ''}</span>
                         {filters && (
-                            <button
-                                className={`dt-filter-btn${activeCount > 0 ? ' dt-filter-btn--active' : ''}`}
+                            <CustomButton
+                                variant="outline"
+                                icon={<SlidersHorizontal size={14} />}
+                                active={activeCount > 0}
+                                badge={activeCount > 0 ? <span className="dt-filter-badge">{activeCount}</span> : undefined}
                                 onClick={openPanel}
-                                type="button"
                             >
-                                <SlidersHorizontal size={14} />
                                 Filters
-                                {activeCount > 0 && <span className="dt-filter-badge">{activeCount}</span>}
-                            </button>
+                            </CustomButton>
                         )}
                     </div>
                 </div>
@@ -209,9 +183,7 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
                     <tbody>
                         {paginated.length === 0 ? (
                             <tr>
-                                <td colSpan={columns.length} className="dt-empty">
-                                    No results found.
-                                </td>
+                                <td colSpan={columns.length} className="dt-empty">No results found.</td>
                             </tr>
                         ) : paginated.map((row, i) => (
                             <tr
@@ -236,129 +208,38 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
 
             {totalPages > 1 && (
                 <div className="dt-pagination">
-                    <button
-                        className="dt-page-btn"
+                    <CustomButton
+                        icon={<ChevronLeft size={16} />}
+                        variant="outline"
                         onClick={() => setPage(p => Math.max(1, p - 1))}
                         disabled={page === 1}
                         aria-label="Previous page"
-                    >
-                        <ChevronLeft size={16} />
-                    </button>
-                    <span className="dt-page-info">
-                        Page {page} of {totalPages}
-                    </span>
-                    <button
-                        className="dt-page-btn"
+                    />
+                    <span className="dt-page-info">Page {page} of {totalPages}</span>
+                    <CustomButton
+                        icon={<ChevronRight size={16} />}
+                        variant="outline"
                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                         disabled={page === totalPages}
                         aria-label="Next page"
-                    >
-                        <ChevronRight size={16} />
-                    </button>
+                    />
                 </div>
             )}
 
             {filters && (
-                <>
-                    <div
-                        className={`dt-panel-backdrop${panelOpen ? ' dt-panel-backdrop--open' : ''}`}
-                        onClick={() => setPanelOpen(false)}
-                    />
-                    <aside className={`dt-filter-panel${panelOpen ? ' dt-filter-panel--open' : ''}`}>
-                        <div className="dt-filter-panel__header">
-                            <h3 className="dt-filter-panel__title">Filters</h3>
-                            <button
-                                className="dt-filter-panel__close"
-                                onClick={() => setPanelOpen(false)}
-                                type="button"
-                                aria-label="Close filters"
-                            >
-                                <X size={16} />
-                            </button>
-                        </div>
-
-                        <div className="dt-filter-panel__body">
-                            {filters.map(f => (
-                                <div key={f.key} className="dt-filter-field">
-                                    <label className="dt-filter-label">{f.label}</label>
-                                    {f.type === 'select' ? (
-                                        <div className="dt-select-wrap">
-                                            <select
-                                                className="dt-filter-select"
-                                                value={(pendingFilters[f.key] as string) ?? ''}
-                                                onChange={e => { setPending(f.key, e.target.value); e.target.blur() }}
-                                            >
-                                                <option value="">All</option>
-                                                {f.options?.map(opt => (
-                                                    <option key={opt} value={opt}>{opt}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    ) : f.type === 'range' ? (() => {
-                                        const dataRange = dataRanges[f.key] ?? { min: 0, max: 100 }
-                                        const rawVal = pendingFilters[f.key] as { min: string; max: string } | undefined
-                                        const curMin = rawVal?.min !== undefined && rawVal.min !== '' ? Number(rawVal.min) : dataRange.min
-                                        const curMax = rawVal?.max !== undefined && rawVal.max !== '' ? Number(rawVal.max) : dataRange.max
-                                        const span = dataRange.max - dataRange.min || 1
-                                        const leftPct = (curMin - dataRange.min) / span * 100
-                                        const rightPct = 100 - (curMax - dataRange.min) / span * 100
-                                        return (
-                                            <div className="dt-range-slider">
-                                                <div className="dt-range-track-bg">
-                                                    <div className="dt-range-track-fill" style={{ left: `${leftPct}%`, right: `${rightPct}%` }} />
-                                                </div>
-                                                <input
-                                                    className="dt-range-input"
-                                                    type="range"
-                                                    min={dataRange.min}
-                                                    max={dataRange.max}
-                                                    value={curMin}
-                                                    onChange={e => {
-                                                        const v = Math.min(Number(e.target.value), curMax - 1)
-                                                        setPending(f.key, { min: String(v), max: String(curMax) })
-                                                    }}
-                                                />
-                                                <input
-                                                    className="dt-range-input"
-                                                    type="range"
-                                                    min={dataRange.min}
-                                                    max={dataRange.max}
-                                                    value={curMax}
-                                                    onChange={e => {
-                                                        const v = Math.max(Number(e.target.value), curMin + 1)
-                                                        setPending(f.key, { min: String(curMin), max: String(v) })
-                                                    }}
-                                                />
-                                                <div className="dt-range-values">
-                                                    <span className="dt-range-val">{curMin}</span>
-                                                    <span className="dt-range-val">{curMax}</span>
-                                                </div>
-                                            </div>
-                                        )
-                                    })() : (
-                                        <input
-                                            className="dt-filter-input"
-                                            type="text"
-                                            placeholder={`Search ${f.label.toLowerCase()}…`}
-                                            value={(pendingFilters[f.key] as string) ?? ''}
-                                            onChange={e => setPending(f.key, e.target.value)}
-                                        />
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="dt-filter-panel__footer">
-                            <button className="dt-filter-clear" onClick={clearFilters} type="button">
-                                Clear all
-                            </button>
-                            <button className="dt-filter-apply" onClick={applyFilters} type="button">
-                                Apply
-                            </button>
-                        </div>
-                    </aside>
-                </>
+                <FilterPanel
+                    open={panelOpen}
+                    onClose={() => setPanelOpen(false)}
+                    filters={filters}
+                    pendingFilters={pendingFilters}
+                    setPending={setPending}
+                    dataRanges={dataRanges}
+                    selectOptions={selectOptions}
+                    onClear={clearFilters}
+                    onApply={applyFilters}
+                />
             )}
         </div>
     )
 }
+
