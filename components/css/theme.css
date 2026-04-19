@@ -1,0 +1,20 @@
+/*
+  _my-components theme.css
+  Override any --mc-* variable in your app's :root to customise the theme.
+*/
+:root {
+  --mc-accent: #a78bfa;
+  --mc-accent-hover: #c4b5fd;
+  --mc-accent-subtle: rgba(167, 139, 250, 0.12);
+  --mc-text: #b0b8c4;
+  --mc-text-h: #e6eaf0;
+  --mc-text-dim: #6b7685;
+  --mc-bg: #0e1117;
+  --mc-surface: #161b22;
+  --mc-surface-2: #1c2129;
+  --mc-border: rgba(255, 255, 255, 0.06);
+  --mc-success: #7ec9a3;
+  --mc-warning: #e4c87a;
+  --mc-danger: #e08888;
+  --mc-topbar-height: 52px;
+}

@@ -1,0 +1,24 @@
+.mc-footer {
+  border-top: 1px solid var(--mc-border, rgba(255, 255, 255, 0.06));
+  margin-top: 3rem;
+  padding: 1.5rem 0 2rem;
+}
+
+.mc-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.mc-footer__copy,
+.mc-footer__note {
+  font-size: 0.8rem;
+  color: var(--mc-text-dim, #6b7685);
+}
+
+.mc-footer__sep {
+  font-size: 0.8rem;
+  color: var(--mc-border, rgba(255, 255, 255, 0.06));
+}

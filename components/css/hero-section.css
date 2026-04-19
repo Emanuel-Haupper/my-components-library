@@ -1,0 +1,56 @@
+.mc-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mc-hero__background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mc-hero__content {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.mc-hero__eyebrow {
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--mc-accent, #a78bfa);
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+}
+
+.mc-hero__title {
+  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+  font-weight: 100;
+  letter-spacing: -0.04em;
+  background: linear-gradient(
+    10deg,
+    var(--mc-text-h, #e6eaf0) 0%,
+    var(--mc-accent, #a78bfa) 60%,
+    var(--mc-accent-hover, #c4b5fd) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.mc-hero__tagline {
+  font-size: 1.1rem;
+  color: var(--mc-text-dim, #6b7685);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-weight: 400;
+}

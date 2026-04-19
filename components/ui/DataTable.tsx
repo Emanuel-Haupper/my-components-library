@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { ArrowUp, ArrowDown, ArrowUpDown, ChevronLeft, ChevronRight, Search, SlidersHorizontal, X } from 'lucide-react'
-import './DataTable.css'
+import '../css/data-table.css'
 
 const ROWS_PER_PAGE = 10
 
@@ -13,7 +13,7 @@ export type FilterDef = {
     max?: number
 }
 
-type DataTableProps = {
+export type DataTableProps = {
     data: Array<Record<string, any>>
     columns: Array<{
         key: string
@@ -154,10 +154,20 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
                             <input
                                 className="dt-search"
                                 type="text"
-                                placeholder="Filter..."
+                                placeholder="Search"
                                 value={query}
                                 onChange={e => { setQuery(e.target.value); setPage(1) }}
                             />
+                            {query && (
+                                <button
+                                    className="dt-search-clear"
+                                    type="button"
+                                    aria-label="Clear search"
+                                    onClick={() => { setQuery(''); setPage(1) }}
+                                >
+                                    <X size={13} />
+                                </button>
+                            )}
                         </div>
                     )}
                     <div className="dt-toolbar-right">
@@ -272,16 +282,18 @@ export function DataTable({ data = [], columns = [], filterKey, filters, onRowCl
                                 <div key={f.key} className="dt-filter-field">
                                     <label className="dt-filter-label">{f.label}</label>
                                     {f.type === 'select' ? (
-                                        <select
-                                            className="dt-filter-select"
-                                            value={(pendingFilters[f.key] as string) ?? ''}
-                                            onChange={e => setPending(f.key, e.target.value)}
-                                        >
-                                            <option value="">All</option>
-                                            {f.options?.map(opt => (
-                                                <option key={opt} value={opt}>{opt}</option>
-                                            ))}
-                                        </select>
+                                        <div className="dt-select-wrap">
+                                            <select
+                                                className="dt-filter-select"
+                                                value={(pendingFilters[f.key] as string) ?? ''}
+                                                onChange={e => { setPending(f.key, e.target.value); e.target.blur() }}
+                                            >
+                                                <option value="">All</option>
+                                                {f.options?.map(opt => (
+                                                    <option key={opt} value={opt}>{opt}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     ) : f.type === 'range' ? (() => {
                                         const dataRange = dataRanges[f.key] ?? { min: 0, max: 100 }
                                         const rawVal = pendingFilters[f.key] as { min: string; max: string } | undefined

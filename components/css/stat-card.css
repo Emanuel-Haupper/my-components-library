@@ -1,0 +1,47 @@
+/* -- BorderGlow wrapper -- */
+.stat-card-glow {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stat-card-glow:hover {
+  transform: scale(1.035);
+}
+
+/* -- Card -- */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  border-radius: 8px;
+}
+
+.stat-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mc-border, rgba(255, 255, 255, 0.06));
+  flex-shrink: 0;
+}
+
+.stat-card__value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--mc-text-h, #e6eaf0);
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+
+.stat-card__label {
+  font-size: 0.72rem;
+  color: var(--mc-text-dim, #6b7685);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}

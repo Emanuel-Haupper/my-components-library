@@ -1,0 +1,63 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: var(--mc-topbar-height, 52px);
+  border-bottom: 1px solid var(--mc-border, rgba(255, 255, 255, 0.06));
+  flex-shrink: 0;
+  z-index: 1000;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.topbar__brand {
+  color: var(--mc-text-h, #e6eaf0);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+}
+
+.topbar__brand svg,
+.topbar__brand-icon {
+  color: var(--mc-accent, #a78bfa);
+}
+
+.topbar__nav {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.topbar__link {
+  background: transparent;
+  border: none;
+  color: var(--mc-text-dim, #6b7685);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.38rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.topbar__link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--mc-text-h, #e6eaf0);
+}
+
+.topbar__link--active {
+  background: var(--mc-accent-subtle, rgba(167, 139, 250, 0.12));
+  color: var(--mc-accent, #a78bfa);
+}

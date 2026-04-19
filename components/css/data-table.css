@@ -22,16 +22,16 @@
 .dt-search-icon {
   position: absolute;
   left: 0.65rem;
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
   pointer-events: none;
   flex-shrink: 0;
 }
 
 .dt-search {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  background: var(--mc-surface-2, #1c2129);
+  border: 1px solid var(--mc-border, rgba(255,255,255,0.06));
   border-radius: 8px;
-  color: var(--text);
+  color: var(--mc-text, #b0b8c4);
   font-family: inherit;
   font-size: 0.88rem;
   padding: 0.45rem 0.8rem 0.45rem 2.1rem;
@@ -41,23 +41,45 @@
 }
 
 .dt-search::placeholder {
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
 }
 
 .dt-search:focus {
-  border-color: var(--accent);
+  border-color: var(--mc-accent, #a78bfa);
+}
+
+.dt-search-clear {
+  position: absolute;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0.2rem;
+  cursor: pointer;
+  color: var(--mc-text-dim, #6b7685);
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.dt-search-clear:hover {
+  color: var(--mc-text-h, #e6eaf0);
+}
+
+.dt-search:not(:placeholder-shown) {
+  padding-right: 2.1rem;
 }
 
 .dt-count {
   font-size: 0.8rem;
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
   white-space: nowrap;
 }
 
 .dt-scroll {
   overflow-x: auto;
   border-radius: 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--mc-border, rgba(255,255,255,0.06));
 }
 
 .dt-table {
@@ -67,8 +89,8 @@
 }
 
 .dt-th {
-  background: var(--surface-2);
-  color: var(--text-dim);
+  background: var(--mc-surface-2, #1c2129);
+  color: var(--mc-text-dim, #6b7685);
   text-transform: uppercase;
   font-size: 0.7rem;
   font-weight: 600;
@@ -78,16 +100,16 @@
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mc-border, rgba(255,255,255,0.06));
   transition: color 0.15s;
 }
 
 .dt-th:hover {
-  color: var(--text-h);
+  color: var(--mc-text-h, #e6eaf0);
 }
 
 .dt-th--sorted {
-  color: var(--accent);
+  color: var(--mc-accent, #a78bfa);
 }
 
 .dt-th-inner {
@@ -103,15 +125,15 @@
 
 .dt-sort-icon {
   flex-shrink: 0;
-  color: var(--accent);
+  color: var(--mc-accent, #a78bfa);
 }
 
 .dt-sort-icon--inactive {
-  color: var(--border);
+  color: var(--mc-border, rgba(255,255,255,0.06));
 }
 
 .dt-row {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mc-border, rgba(255,255,255,0.06));
   transition: background 0.1s;
 }
 
@@ -120,7 +142,7 @@
 }
 
 .dt-row:hover {
-  background: var(--surface-2);
+  background: var(--mc-surface-2, #1c2129);
 }
 
 .dt-row--clickable {
@@ -133,13 +155,13 @@
 
 .dt-td {
   padding: 0.7rem 1rem;
-  color: var(--text);
+  color: var(--mc-text, #b0b8c4);
 }
 
 .dt-empty {
   padding: 2.5rem;
   text-align: center;
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
 }
 
 .dt-pagination {
@@ -151,9 +173,9 @@
 }
 
 .dt-page-btn {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  color: var(--text);
+  background: var(--mc-surface-2, #1c2129);
+  border: 1px solid var(--mc-border, rgba(255,255,255,0.06));
+  color: var(--mc-text, #b0b8c4);
   padding: 0.35rem 0.8rem;
   border-radius: 6px;
   cursor: pointer;
@@ -163,9 +185,9 @@
 }
 
 .dt-page-btn:hover:not(:disabled) {
-  background: var(--surface);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--mc-surface, #161b22);
+  border-color: var(--mc-accent, #a78bfa);
+  color: var(--mc-accent, #a78bfa);
 }
 
 .dt-page-btn:disabled {
@@ -175,10 +197,10 @@
 
 .dt-page-info {
   font-size: 0.85rem;
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
 }
 
-/* ── Toolbar right group ── */
+/* -- Toolbar right group -- */
 .dt-toolbar-right {
   display: flex;
   align-items: center;
@@ -186,14 +208,14 @@
   margin-left: auto;
 }
 
-/* ── Filter button ── */
+/* -- Filter button -- */
 .dt-filter-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
+  background: var(--mc-surface-2, #1c2129);
+  border: 1px solid var(--mc-border, rgba(255,255,255,0.06));
+  color: var(--mc-text-dim, #6b7685);
   padding: 0.38rem 0.85rem;
   border-radius: 8px;
   cursor: pointer;
@@ -205,17 +227,17 @@
 }
 
 .dt-filter-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--mc-accent, #a78bfa);
+  color: var(--mc-accent, #a78bfa);
 }
 
 .dt-filter-btn--active {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--mc-accent, #a78bfa);
+  color: var(--mc-accent, #a78bfa);
 }
 
 .dt-filter-badge {
-  background: var(--accent);
+  background: var(--mc-accent, #a78bfa);
   color: #0e1117;
   border-radius: 9999px;
   font-size: 0.7rem;
@@ -224,7 +246,7 @@
   line-height: 1.3;
 }
 
-/* ── Backdrop ── */
+/* -- Backdrop -- */
 .dt-panel-backdrop {
   position: fixed;
   inset: 0;
@@ -239,10 +261,10 @@
   pointer-events: auto;
 }
 
-/* ── Filter panel ── */
+/* -- Filter panel -- */
 .dt-filter-panel {
   position: fixed;
-  top: 0;
+  top: var(--mc-topbar-height, 52px);
   right: 0;
   bottom: 0;
   width: 320px;
@@ -253,7 +275,7 @@
   background: rgba(22, 27, 34, 0.95);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-left: 1px solid var(--border);
+  border-left: 1px solid var(--mc-border, rgba(255,255,255,0.06));
   transform: translateX(100%);
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -267,21 +289,21 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.2rem 1.4rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mc-border, rgba(255,255,255,0.06));
   flex-shrink: 0;
 }
 
 .dt-filter-panel__title {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--text-h);
+  color: var(--mc-text-h, #e6eaf0);
   margin: 0;
 }
 
 .dt-filter-panel__close {
   background: none;
   border: none;
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
   cursor: pointer;
   padding: 0.3rem;
   border-radius: 6px;
@@ -291,7 +313,7 @@
 }
 
 .dt-filter-panel__close:hover {
-  color: var(--text-h);
+  color: var(--mc-text-h, #e6eaf0);
   background: rgba(255, 255, 255, 0.06);
 }
 
@@ -313,17 +335,17 @@
 .dt-filter-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .dt-filter-input,
 .dt-filter-select {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  background: var(--mc-surface-2, #1c2129);
+  border: 1px solid var(--mc-border, rgba(255,255,255,0.06));
   border-radius: 8px;
-  color: var(--text);
+  color: var(--mc-text, #b0b8c4);
   font-family: inherit;
   font-size: 0.88rem;
   padding: 0.5rem 0.85rem;
@@ -333,28 +355,62 @@
   appearance: none;
 }
 
+.dt-filter-select {
+    padding-right: 2.25rem;
+}
+
+.dt-select-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.dt-select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  width: 1em;
+  height: 1em;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpolyline points='5,7 10,13 15,7' stroke='%236b7685' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.dt-select-wrap:hover::after,
+.dt-select-wrap:focus-within::after {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpolyline points='5,7 10,13 15,7' stroke='%23a78bfa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+}
+
+.dt-select-wrap:focus-within::after {
+  transform: translateY(-50%) rotate(-180deg);
+}
+
 .dt-filter-input::placeholder {
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
 }
 
 .dt-filter-input:focus,
 .dt-filter-select:focus {
-  border-color: var(--accent);
+  border-color: var(--mc-accent, #a78bfa);
 }
 
 .dt-filter-panel__footer {
   display: flex;
   gap: 0.75rem;
   padding: 1.1rem 1.4rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--mc-border, rgba(255,255,255,0.06));
   flex-shrink: 0;
 }
 
 .dt-filter-clear {
   flex: 1;
   background: none;
-  border: 1px solid var(--border);
-  color: var(--text-dim);
+  border: 1px solid var(--mc-border, rgba(255,255,255,0.06));
+  color: var(--mc-text-dim, #6b7685);
   padding: 0.55rem 1rem;
   border-radius: 8px;
   cursor: pointer;
@@ -365,14 +421,14 @@
 }
 
 .dt-filter-clear:hover {
-  border-color: var(--text-dim);
-  color: var(--text);
+  border-color: var(--mc-text-dim, #6b7685);
+  color: var(--mc-text, #b0b8c4);
 }
 
 .dt-filter-apply {
   flex: 1;
-  background: var(--accent);
-  border: 1px solid var(--accent);
+  background: var(--mc-accent, #a78bfa);
+  border: 1px solid var(--mc-accent, #a78bfa);
   color: #0e1117;
   padding: 0.55rem 1rem;
   border-radius: 8px;
@@ -387,7 +443,7 @@
   opacity: 0.88;
 }
 
-/* ── Range slider ── */
+/* -- Range slider -- */
 .dt-range-slider {
   position: relative;
   height: 20px;
@@ -410,7 +466,7 @@
   position: absolute;
   top: 0;
   height: 100%;
-  background: var(--accent);
+  background: var(--mc-accent, #a78bfa);
   border-radius: 2px;
 }
 
@@ -440,7 +496,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--mc-accent, #a78bfa);
   border: 2.5px solid #0e1117;
   cursor: pointer;
   pointer-events: all;
@@ -461,7 +517,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--mc-accent, #a78bfa);
   border: 2.5px solid #0e1117;
   cursor: pointer;
   pointer-events: all;
@@ -484,6 +540,6 @@
 
 .dt-range-val {
   font-size: 0.78rem;
-  color: var(--text-dim);
+  color: var(--mc-text-dim, #6b7685);
   font-variant-numeric: tabular-nums;
 }
