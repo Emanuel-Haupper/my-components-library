@@ -1,4 +1,6 @@
-export { MyButton } from "./MyButton.js";
-export { MyCard } from "./MyCard.js";
-export { MyInput } from "./MyInput.js";
-export { MyTable } from "./MyTable.js";
+export { MyButton } from "./MyButton.ts";
+export { MyCard } from "./MyCard.ts";
+export { MyInput } from "./MyInput.ts";
+export { MyTable } from "./MyTable.ts";
+export { DataTable } from "./DataTable.tsx";
+export type { FilterDef } from "./DataTable.tsx";
