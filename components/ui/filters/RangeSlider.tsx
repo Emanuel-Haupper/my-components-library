@@ -8,10 +8,28 @@ export type RangeSliderProps = {
     onChange: (min: number, max: number) => void
 }
 
+function decimalPlaces(value: number) {
+    const text = String(value)
+    if (!text.includes('.')) return 0
+    return text.split('.')[1]?.length ?? 0
+}
+
+function inferStep(min: number, max: number) {
+    const precision = Math.max(decimalPlaces(min), decimalPlaces(max))
+    return precision > 0 ? 1 / 10 ** precision : 1
+}
+
+function roundToStep(value: number, step: number) {
+    const precision = decimalPlaces(step)
+    return Number(value.toFixed(precision))
+}
+
 export function RangeSlider({ min, max, valueMin, valueMax, onChange }: RangeSliderProps) {
+    const step = inferStep(min, max)
     const span = max - min || 1
     const leftPct = (valueMin - min) / span * 100
     const rightPct = 100 - (valueMax - min) / span * 100
+    const minGap = Math.min(step, span)
 
     return (
         <div className="mc-range">
@@ -23,10 +41,12 @@ export function RangeSlider({ min, max, valueMin, valueMax, onChange }: RangeSli
                 type="range"
                 min={min}
                 max={max}
+                step={step}
                 value={valueMin}
                 onChange={e => {
-                    const v = Math.min(Number(e.target.value), valueMax - 1)
-                    onChange(v, valueMax)
+                    const nextValue = Number(e.target.value)
+                    const clampedValue = Math.min(nextValue, valueMax - minGap)
+                    onChange(roundToStep(clampedValue, step), roundToStep(valueMax, step))
                 }}
             />
             <input
@@ -34,10 +54,12 @@ export function RangeSlider({ min, max, valueMin, valueMax, onChange }: RangeSli
                 type="range"
                 min={min}
                 max={max}
+                step={step}
                 value={valueMax}
                 onChange={e => {
-                    const v = Math.max(Number(e.target.value), valueMin + 1)
-                    onChange(valueMin, v)
+                    const nextValue = Number(e.target.value)
+                    const clampedValue = Math.max(nextValue, valueMin + minGap)
+                    onChange(roundToStep(valueMin, step), roundToStep(clampedValue, step))
                 }}
             />
             <div className="mc-range__values">

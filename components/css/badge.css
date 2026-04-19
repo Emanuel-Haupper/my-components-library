@@ -7,6 +7,7 @@
   font-weight: 600;
   text-transform: capitalize;
   letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .badge--success {
